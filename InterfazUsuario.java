@@ -2,14 +2,14 @@ import java.util.Scanner;
 
 public class InterfazUsuario {
     private Hotel hotel;
+    private Scanner scanner;
 
     public InterfazUsuario(Hotel hotel) {
         this.hotel = hotel;
+        this.scanner = new Scanner(System.in);
     }
 
     public void mostrarMenu() {
-        Scanner scanner = new Scanner(System.in);
-
         boolean salir = false;
         while (!salir) {
             System.out.println("Menú:");
@@ -17,8 +17,8 @@ public class InterfazUsuario {
             System.out.println("2. Mostrar lista de espera");
             System.out.println("3. Asignar cliente a habitación");
             System.out.println("4. Salir");
+    
             int opcion = scanner.nextInt();
-
             switch (opcion) {
                 case 1:
                     scanner.nextLine();
@@ -48,16 +48,31 @@ public class InterfazUsuario {
                     break;
             }
         }
-
+        scanner.close();
+    
         System.out.println("Gracias por usar el sistema de gestión de reservas de Hotel");
     }
-
+    
     public static void main(String[] args) {
         System.out.println("Bienvenido al sistema de gestión de reservas de Hotel");
         System.out.println("Ingrese el número de habitaciones disponibles:");
-        int numHabitaciones = new Scanner(System.in).nextInt();
+        int numHabitaciones = 0;
+        Scanner scanner = null;
+    
+        try {
+            scanner = new Scanner(System.in);
+            numHabitaciones = scanner.nextInt();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
+        }
+    
         Hotel hotel = new Hotel(numHabitaciones);
         InterfazUsuario interfazUsuario = new InterfazUsuario(hotel);
         interfazUsuario.mostrarMenu();
     }
+    
 }
